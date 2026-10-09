@@ -2,31 +2,32 @@ class Solution {
 public:
     int minInsertions(string s) {
 
-         int open = 0;
-        int insertions = 0;
+        int n=s.size();
 
-        for (int i = 0; i < s.size(); i++) {
-            if (s[i] == '(') {
-                open++;
-            } else {
-                // If the next character is not ')',
-                // insert one ')' to complete the pair.
-                if (i + 1 < s.size() && s[i + 1] == ')') {
-                    i++;  // Consume the second ')'
-                } else {
-                    insertions++;  // Insert missing ')'
+        int ans=0;
+        int req=0;
+        
+        for(int i=0;i<n;i++)
+        {
+            if(s[i]=='(')
+            {
+                if(req%2!=0)
+                {
+                    req--;
+                    ans++;
                 }
-
-                // Match this '))' pair with an opening '('.
-                if (open > 0) {
-                    open--;
-                } else {
-                    insertions++;  // Insert missing '('
+                req+=2;
+            } 
+            else
+            { 
+                req--;
+                if(req<0)
+                {
+                    ans++;         
+                    req+=2; 
                 }
             }
         }
-
-        // Each unmatched '(' needs two ')'.
-        return insertions + 2 * open;
+        return ans+req;
     }
 };
