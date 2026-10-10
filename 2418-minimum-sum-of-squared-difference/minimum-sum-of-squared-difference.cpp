@@ -1,29 +1,68 @@
 class Solution {
 public:
-    long long minSumSquareDiff(vector<int>& nums1, vector<int>& nums2, int k1, int k2) {
-        int n = nums1.size(), M = 0;
-        long long k = 1LL * k1 + k2;
-        vector<int> diff(n);
+    long long minSumSquareDiff(vector<int>& nums1,
+                               vector<int>& nums2,
+                               int k1, int k2) {
 
-        for(int i = 0; i < n; i++){
-            M = max(M, diff[i] = abs(nums1[i] - nums2[i]));
-        }
-        
-        vector<int> bucket(M + 1);
-        for(int x :  diff) bucket[x]++;
+        int n = nums1.size();
 
-        for( int i = M; i >0 && k >0; i--){
-            int take = min((long long) bucket[i], k);
-            bucket[i] -= take;
-            bucket[i-1] += take;
-            k -= take;
+        vector<long long> diff(n);
+
+        long long k = (long long)k1 + k2;
+        long long sum = 0;
+
+        for (int i = 0; i < n; i++) {
+            diff[i] = abs(nums1[i] - nums2[i]);
+            sum += diff[i];
         }
+
+        if (k >= sum)
+            return 0;
+
+        sort(diff.rbegin(), diff.rend());
+
+        diff.push_back(0);
+
+        int i = 0;
+
+        while (i < n) {
+
+            long long cnt = i + 1;
+
+            long long cost =
+                (diff[i] - diff[i + 1]) * cnt;
+
+            if (cost <= k) {
+                k -= cost;
+                i++;
+            }
+            else {
+                break;
+            }
+        }
+
+    
+        long long cnt = i + 1;
+
+        long long dec = k / cnt;
+        long long rem = k % cnt;
 
         long long ans = 0;
-        for(int i = 1; i <= M; i++)
-            ans += 1LL * bucket[i] * i * i;
 
-            return ans;
+        for (int j = 0; j < cnt; j++) {
+
+            long long x = diff[i] - dec;
+
+            if (j < rem)
+                x--;
+
+            ans += x * x;
+        }
+
+        for (int j = cnt; j < n; j++) {
+            ans += diff[j] * diff[j];
+        }
+
+        return ans;
     }
-
 };
