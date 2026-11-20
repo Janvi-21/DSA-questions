@@ -16,10 +16,11 @@ public:
         // better
 
         unordered_map<int,int> presum;
+        presum[0] = 1;
         int sum = 0;
         for(int num : nums){
             sum += num;
-            if(sum == k) subarray++;
+            // if(sum == k) subarray++;
 
             if(presum.find(sum - k) != presum.end()){
                 subarray += presum[sum - k];
