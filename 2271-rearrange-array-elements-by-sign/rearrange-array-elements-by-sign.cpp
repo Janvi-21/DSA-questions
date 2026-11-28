@@ -1,19 +1,19 @@
 class Solution {
 public:
-    vector<int> rearrangeArray(vector<int>& nums) {
-        int a = nums.size();
-        vector<int> r(a);
-        int p = 0, n =1;
-        for(int i = 0; i < a; i++){
-            if(nums[i] < 0) {
-                r[n] = nums[i];
-                n+=2;
+    vector<int> rearrangeArray(vector<int>& arr) {
+      int n=arr.size();
+        int i=0, j=1;
+        vector<int>ans(n);
+        for(int k=0; k<n; k++){
+            if(arr[k]>0){
+                ans[i]=arr[k];
+                i=i+2;
             }
             else{
-                r[p] = nums[i];
-                p+=2;
+                ans[j]=arr[k];
+                j=j+2;
             }
         }
-        return r;
+        return ans;
     }
 };
